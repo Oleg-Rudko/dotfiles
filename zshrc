@@ -1,82 +1,65 @@
-# had to preload compdef https://github.com/memborsky/dotfiles/commit/0cd2e69463d25bb0d9fa17710c7a8ed8f54a018f
-autoload -U compinit compdef
-compinit
+# If you come from bash you might have to change your $PATH.
+export PATH=$HOME/bin:/usr/local/bin:$PATH
+export ZSH="/Users/oleg/.oh-my-zsh"
+export PATH="$HOME/.rbenv/bin:$PATH"
+export PATH="$PATH:/Users/oleg/development/flutter/bin"
+export NVM_DIR="$HOME/.nvm"
+    [ -s "$(brew --prefix)/opt/nvm/nvm.sh" ] && . "$(brew --prefix)/opt/nvm/nvm.sh"
+eval "$(rbenv init -)"
+eval "$(jump shell)"
 
-# complete g like git
-compdef g=git
+ZSH_DISABLE_COMPFIX=true
+# See https://github.com/ohmyzsh/ohmyzsh/wiki/Themes
+ZSH_THEME="robbyrussell"
+# Plugins
+plugins=(
+ zsh-syntax-highlighting
+ zsh-autosuggestions
+)
 
-function g {
-   if [[ $# > 0 ]]; then
-     git $@
-   else
-     git status
-   fi
-}
+# for Ctrl left and right
+bindkey '^[[1;5D' backward-word
+bindkey '^[[1;5C' forward-word
 
-transfer() { if [ $# -eq 0 ]; then echo "No arguments specified. Usage:\necho transfer /tmp/test.md\ncat /tmp/test.md | transfer test.md"; return 1; fi 
-  tmpfile=$( mktemp -t transferXXX ); if tty -s; then basefile=$(basename "$1" | sed -e 's/[^a-zA-Z0-9._-]/-/g'); curl --progress-bar --upload-file "$1" "https://transfer.sh/$basefile" >> $tmpfile; else curl --progress-bar --upload-file "-" "https://transfer.sh/$1" >> $tmpfile ; fi; cat $tmpfile; rm -f $tmpfile; } 
+source $ZSH/oh-my-zsh.sh
+# aliases
+alias ber="bundle exec rspec"
+alias checkrails="lsof -i tcp:5000"
+alias cyspec="yarn cypress run --browser chrome --spec"
+alias db_reseed="lsof -ti :5000 | xargs kill; lsof -ti :3000 | xargs kill; docker-compose stop hasura; rails db:drop && clear && rails db:create && clear  && rails db:migrate && clear && docker-compose start hasura && sleep 5 && clear  && cd ./hasura && hasura metadata apply && sleep 5 && cd ../ && rails db:seed && echo \u001b[32mOk || echo \u001b[35mERROR!!!!"
+alias dbmd="rails db:migrate RAILS_ENV=development && rails db:migrate"
+alias dbs="bundle exec bin/rails s -p 5000"
+alias dcstart="docker-compose start hasura"
+alias dcstop="docker-compose stop hasura"
+alias dkall="docker container kill $(docker ps -q)"
+alias dps="docker ps"
+alias g="git"
+alias gad="git add ."
+alias gb="git branch"
+alias gcm="git commit"
+alias gco="git checkout"
+alias gdb='git branch | grep -v "master\|staging" | xargs git branch -D'
+alias gdb='git branch | grep -v "master\|staging" | xargs git branch -D'
+alias go="git open"
+alias gp="git pull"
+alias gpush='git push origin HEAD'
+alias grh="git reset --hard HEAD"
+alias gs="git status"
+alias gunstage="git restore --staged"
+alias hma="hasura metadata apply"
+alias hme="hasura metadata export"
+alias pgrestoreprod="pg_restore --verbose --clean --no-acl --no-owner -h localhost -U $(whoami) -d acuity_development latest.dump && bin/rails db:migrate RAILS_ENV=development "
+alias review="bin/review"
+alias rrc="rails db:drop && rails db:create && rails db:migrate"
+alias rseed="rails db:seed"
+alias uncommit="git reset HEAD~"
+alias vi="nvim"
+alias vim="nvim"
+alias vimrc="cd && vim .vimrc"
+alias yco="yarn cypress open"
+alias ys="yarn start"
+alias start="/Users/oleg/Work/acuity/bin/dev.sh"
+alias re_drop="dcstop && rrc && dbmd && dcstart && sleep 5 && cd hasura && hma && cd ../"
 
+source /Users/oleg/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh
 
-export VISUAL=nvim
-export PATH="/Users/philip/dotfiles/bin:$PATH"
-
-### Added by the Heroku Toolbelt
-export PATH="/usr/local/heroku/bin:$PATH"
-export PATH="/usr/local/mysql/bin:$PATH"
-export PATH="/Applications/Postgres.app/Contents/Versions/latest/bin:$PATH"
-
-#flutter path
-export PATH="/Users/philip/development/flutter/bin:$PATH"
-
-export PKG_CONFIG_PATH="/usr/local/opt/pkg-config:$PKG_CONFIG_PATH"
-
-export EDITOR='nvim'
-
-export OBJC_DISABLE_INITIALIZE_FORK_SAFETY=YES
-
-autoload -Uz compinit && compinit
-
-export PATH="$HOME/bin:$PATH"
-export PATH="$HOME/bin/jruby-9.1.2.0/bin:$PATH"
-
-
-# for erlang / iex
-export ERL_AFLAGS="-kernel shell_history enabled"
-
-source $HOME/dotfiles/zsh/prompt
-source $HOME/dotfiles/zsh/aliases
-
-# added by travis gem
-[ -f /Users/philip/.travis/travis.sh ] && source /Users/philip/.travis/travis.sh
-
-# autojump
-[ -f /usr/local/etc/profile.d/autojump.sh ] && . /usr/local/etc/profile.d/autojump.sh
-
-#source ~/bin/tmuxinator.zsh
-
-bindkey "^P" up-line-or-search
-bindkey "^A" vi-beginning-of-line
-
-. $HOME/.asdf/asdf.sh
-
-#. $HOME/.asdf/completions/asdf.bash
-
-#export PATH="$(brew --prefix qt@5.5)/bin:$PATH"
-
-# twilio autocomplete setup
-TWILIO_AC_ZSH_SETUP_PATH=/Users/philip/.twilio-cli/autocomplete/zsh_setup && test -f $TWILIO_AC_ZSH_SETUP_PATH && source $TWILIO_AC_ZSH_SETUP_PATH;
-
-export PATH="$PATH:`yarn global bin`"
-
-export PATH="/usr/local/opt/node@10/bin:$PATH"
-
-# Added by serverless binary installer
-export PATH="$HOME/.serverless/bin:$PATH"
-
-# The next line updates PATH for Netlify's Git Credential Helper.
-if [ -f '/Users/philip/.netlify/helper/path.zsh.inc' ]; then source '/Users/philip/.netlify/helper/path.zsh.inc'; fi
-
-export PATH="$HOME/.yarn/bin:$HOME/.config/yarn/global/node_modules/.bin:$PATH"
-
-
-[ -f ~/.fzf.zsh ] && source ~/.fzf.zsh
