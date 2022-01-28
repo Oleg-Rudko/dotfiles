@@ -1,11 +1,16 @@
 # If you come from bash you might have to change your $PATH.
 export PATH=$HOME/bin:/usr/local/bin:$PATH
 export ZSH="/Users/oleg/.oh-my-zsh"
-export PATH="$HOME/.rbenv/bin:$PATH"
+# export PATH="$HOME/.rbenv/bin:$PATH"
 export PATH="$PATH:/Users/oleg/development/flutter/bin"
-export NVM_DIR="$HOME/.nvm"
-    [ -s "$(brew --prefix)/opt/nvm/nvm.sh" ] && . "$(brew --prefix)/opt/nvm/nvm.sh"
-eval "$(rbenv init -)"
+# for asdf
+. /usr/local/opt/asdf/libexec/asdf.sh
+# finish asdf
+# for rbenv
+# export NVM_DIR="$HOME/.nvm"
+    # [ -s "$(brew --prefix)/opt/nvm/nvm.sh" ] && . "$(brew --prefix)/opt/nvm/nvm.sh"
+# eval "$(rbenv init -)"
+# finish rbenv
 eval "$(jump shell)"
 
 ZSH_DISABLE_COMPFIX=true
@@ -24,6 +29,7 @@ bindkey '^[[1;5C' forward-word
 source $ZSH/oh-my-zsh.sh
 # aliases
 alias ber="bundle exec rspec"
+alias nplug="nvim --cmd 'set rtp+=$(pwd)' ."
 alias checkrails="lsof -i tcp:5000"
 alias cyspec="yarn cypress run --browser chrome --spec"
 alias db_reseed="lsof -ti :5000 | xargs kill; lsof -ti :3000 | xargs kill; docker-compose stop hasura; rails db:drop && clear && rails db:create && clear  && rails db:migrate && clear && docker-compose start hasura && sleep 5 && clear  && cd ./hasura && hasura metadata apply && sleep 5 && cd ../ && rails db:seed && echo \u001b[32mOk || echo \u001b[35mERROR!!!!"
@@ -33,6 +39,7 @@ alias dcstart="docker-compose start hasura"
 alias dcstop="docker-compose stop hasura"
 alias dkall="docker container kill $(docker ps -q)"
 alias dps="docker ps"
+alias killruby="kill -9 $(lsof -i tcp:5000 -t)"
 alias g="git"
 alias gad="git add ."
 alias gb="git branch"

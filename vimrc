@@ -42,6 +42,8 @@ Plug 'morhetz/gruvbox'
 Plug 'ryanoasis/vim-devicons'
 Plug 'styled-components/vim-styled-components', { 'branch': 'main' }
 Plug 'itchyny/lightline.vim'
+Plug 'vim-airline/vim-airline'
+Plug 'stsewd/fzf-checkout.vim'
 
 "theme
 " Plug 'tomasiser/vim-code-dark'
@@ -77,6 +79,9 @@ let mapleader = " "
 
 " save file
 nnoremap <leader><leader> :w<cr>
+
+"add word to spell checker
+vnoremap <leader>aw :CocCommand cSpell.addWordToUserDictionary<CR>
 
 " quit file
 nnoremap <leader>q :q<cr>
@@ -156,6 +161,9 @@ set ttyfast
 
 set lazyredraw
 
+" git settings
+nmap <leader>gs :G<CR>
+
 set backspace=2
 "no backups since we are always in git (almost)
 set nobackup
@@ -191,9 +199,19 @@ let g:javascript_enable_domhtmlcss = 1
 autocmd BufEnter *.{js,jsx,ts,tsx} :syntax sync fromstart
 autocmd BufLeave *.{js,jsx,ts,tsx} :syntax sync clear
 
+nnoremap <silent> K :call CocAction('doHover')<CR>
+
 let g:deoplete#enable_at_startup = 1
 
 let g:rainbow_active = 1 "set to 0 if you want to enable it later via :RainbowToggle
+
+" fzf-checkout.vim
+let g:fzf_layout = { 'window': { 'width': 0.8, 'height': 0.8 } }
+let $FZF_DEFAULT_OPTS='--reverse'
+" let g:fzf_tag_actions = {
+"       \ 'checkout': {'execute': '!{git} -C {cwd} checkout {branch}'},
+"       \}
+nnoremap <leader>gc :GCheckout<CR>
 
 "style the terminal
 let g:NERDTreeFileExtensionHighlightFullName = 1
@@ -203,26 +221,28 @@ let g:NERDTreePatternMatchHighlightFullName = 1
 let g:WebDevIconsDisableDefaultFolderSymbolColorFromNERDTreeDir = 1
 let g:WebDevIconsDisableDefaultFileSymbolColorFromNERDTreeFile = 1
 
-" Coc
+" Coc 
 let g:coc_global_extensions = [
       \ 'coc-css',
       \ 'coc-emmet',
-      \ 'coc-eslint',
-      \ 'coc-git',
-      \ 'coc-html',
+      \ 'coc-eslint', 
+      \ 'coc-git', 
+      \ 'coc-html', 
       \ 'coc-json',
-      \ 'coc-pairs',
-      \ 'coc-prettier',
+      \ 'coc-pairs', 
+      \ 'coc-prettier', 
       \ 'coc-snippets',
       \ 'coc-tslint-plugin',
       \ 'coc-tsserver',
       \ 'coc-yaml',
+      \ 'coc-highlight',
+      \ 'coc-spell-checker',
       \ ]
 
 "CocCommand
-vmap <leader>p :CocCommand prettier.formatFile<CR>
+vmap <leader>p :CocCommand prettier.formatFile<CR> 
 nmap <leader>p :CocCommand prettier.formatFile<CR>
-nmap <leader>r <Plug>(coc-rename)
+nmap <leader>rn <Plug>(coc-rename)
 nmap <silent> gd <Plug>(coc-definition)
 
 " Use K to show documentation in preview window
@@ -244,7 +264,7 @@ endfunction
 
 function! CheckIfCurrentBufferIsFile()
   return strlen(expand('%')) > 0
-endfunction
+endfunction 
 " Call NERDTreeFind iff NERDTree is active, current window contains a modifiable
 " file, and we're not in vimdiff
 function! SyncTree()
