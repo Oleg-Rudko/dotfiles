@@ -3,11 +3,10 @@ set encoding=UTF-8
 call plug#begin('~/.config/nvim/plugged')
 " Define bundles via Github repos
 Plug 'christoomey/vim-run-interactive'
-"vim 
+"vim
 Plug 'junegunn/fzf', { 'do': { -> fzf#install() } }
 Plug 'junegunn/fzf.vim'
 Plug 'kana/vim-textobj-user'
-Plug 'mattn/emmet-vim'
 Plug 'mileszs/ack.vim'
 Plug 'preservim/nerdtree'
 Plug 'sheerun/vim-polyglot'
@@ -44,7 +43,7 @@ Plug 'styled-components/vim-styled-components', { 'branch': 'main' }
 Plug 'itchyny/lightline.vim'
 Plug 'vim-airline/vim-airline'
 Plug 'stsewd/fzf-checkout.vim'
-
+Plug 'ntpeters/vim-better-whitespace'
 "theme
 " Plug 'tomasiser/vim-code-dark'
 " New things
@@ -91,7 +90,7 @@ inoremap jj <ESC>
 inoremap kk <ESC>
 
 " Press enter when to import func or hoverbuffer
-inoremap <silent>gg <C-n><C-y>
+" inoremap <silent>gg <C-n><C-y>
 
 "nerd tree mappings
 nnoremap <leader>n :NERDTreeToggle<CR>
@@ -119,6 +118,13 @@ nnoremap <c-p> :GFiles --cached --others --exclude-standard<cr>
 nnoremap <leader>a :Ack
 " leader k to search for the word under the cursor
 nnoremap <leader>k :Ack <C-R><C-W><CR>
+if executable('rg')
+    let g:ctrlp_user_command = 'rg --files %s'
+    let g:ctrlp_use_caching = 0
+    let g:ctrlp_working_path_mode = 'ra'
+    let g:ctrlp_switch_buffer = 'et'
+endif
+
 "assign ripgrep to search for ack
 let g:ackprg = 'rg --vimgrep --no-heading'
 
@@ -171,11 +177,14 @@ set nowritebackup
 set noswapfile
 
 "theme
+let g:gruvbox_contrast_dark="hard"
 colorscheme gruvbox
+
+
 " colorscheme codedark
 
 " Customizations
-" set relativenumber
+set relativenumber
 set number
 set nocompatible
 set showmatch
@@ -244,6 +253,7 @@ vmap <leader>p :CocCommand prettier.formatFile<CR>
 nmap <leader>p :CocCommand prettier.formatFile<CR>
 nmap <leader>rn <Plug>(coc-rename)
 nmap <silent> gd <Plug>(coc-definition)
+nmap <silent> gs <Plug>(coc-codeaction-selected)<CR>
 
 " Use K to show documentation in preview window
 nnoremap <silent> K :call <SID>show_documentation()<CR>
@@ -298,4 +308,3 @@ let g:python3_host_prog = '/usr/local/bin/python3'
 let g:python_host_prog = '/usr/bin/python'
 "ruby neovim settings
 let g:ruby_host_prog = '~/.rbenv/versions/2.4.1/bin/neovim-ruby-host'
-
