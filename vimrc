@@ -1,3 +1,4 @@
+" init.vim file
 set encoding=UTF-8
 
 call plug#begin('~/.config/nvim/plugged')
@@ -85,10 +86,6 @@ vnoremap <leader>aw :CocCommand cSpell.addWordToUserDictionary<CR>
 " quit file
 nnoremap <leader>q :q<cr>
 
-" quit esc
-inoremap jj <ESC>
-inoremap kk <ESC>
-
 " Press enter when to import func or hoverbuffer
 " inoremap <silent>gg <C-n><C-y>
 
@@ -161,6 +158,7 @@ set tabstop=2
 set softtabstop=2
 " when indenting with '>', use 2 spaces width
 set shiftwidth=2
+set clipboard=unnamedplus " copy to buffer
 
 "scrolling speed
 set ttyfast
@@ -230,22 +228,23 @@ let g:NERDTreePatternMatchHighlightFullName = 1
 let g:WebDevIconsDisableDefaultFolderSymbolColorFromNERDTreeDir = 1
 let g:WebDevIconsDisableDefaultFileSymbolColorFromNERDTreeFile = 1
 
-" Coc 
+" Coc
 let g:coc_global_extensions = [
       \ 'coc-css',
       \ 'coc-emmet',
-      \ 'coc-eslint', 
-      \ 'coc-git', 
-      \ 'coc-html', 
+      \ 'coc-eslint',
+      \ 'coc-git',
+      \ 'coc-html',
       \ 'coc-json',
-      \ 'coc-pairs', 
-      \ 'coc-prettier', 
+      \ 'coc-pairs',
+      \ 'coc-prettier',
       \ 'coc-snippets',
       \ 'coc-tslint-plugin',
       \ 'coc-tsserver',
       \ 'coc-yaml',
       \ 'coc-highlight',
       \ 'coc-spell-checker',
+      \ 'coc-dictionary',
       \ ]
 
 "CocCommand
