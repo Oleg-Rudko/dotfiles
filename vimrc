@@ -38,11 +38,25 @@ Plug 'morhetz/gruvbox'
 Plug 'ryanoasis/vim-devicons'
 Plug 'vim-airline/vim-airline'
 Plug 'ntpeters/vim-better-whitespace'
+Plug 'honza/vim-snippets'
+Plug 'mok-aster/rails-snippets'
 "theme
 " Plug 'tomasiser/vim-code-dark'
 " New things
+Plug 'tpope/vim-endwise' "help to finish end, def ... rails
+Plug 'tpope/vim-surround'
+
 call plug#end()
 
+let g:user_emmet_leader_key='<C-Z>'
+
+"for html snippets in rails erb
+" autocmd BufNewFile,BufRead *.html.erb set filetype=html
+
+"highlight debugging stuff so you don't miss it
+au BufEnter *.rb syn match error contained "\<byebug\>"
+au BufEnter *.rb syn match error contained "\<binding.pry\>"
+au BufEnter *.rb syn match error contained "\<debugger\>"
 
 "disabled arrow key
 nnoremap <Up> <NOP>
@@ -80,6 +94,7 @@ imap <C-l> <right>
 nnoremap <leader>n :NERDTreeToggle<CR>
 nnoremap <leader>N :NERDTreeFind<CR>
 nnoremap <leader>gb :Git blame<CR>
+autocmd VimEnter * NERDSnippetsDisable
 
 "quicker split movement in normal mode
 nnoremap <C-j> <C-w>j
@@ -98,6 +113,7 @@ nnoremap <c-p> :GFiles --cached --others --exclude-standard<cr>
 nnoremap <leader>a :Ack
 " leader k to search for the word under the cursor
 nnoremap <leader>k :Ack <C-R><C-W><CR>
+" We need to install rg -> brew install rg
 if executable('rg')
     let g:ctrlp_user_command = 'rg --files %s'
     let g:ctrlp_use_caching = 0
@@ -140,7 +156,8 @@ set tabstop=2
 set softtabstop=2
 " when indenting with '>', use 2 spaces width
 set shiftwidth=2
-set clipboard=unnamedplus " copy to buffer
+" set clipboard=unnamedplus " copy to buffer
+map <leader>y "*y
 "scrolling speed
 set ttyfast
 
@@ -225,7 +242,7 @@ let g:coc_global_extensions = [
       \ ]
 
 "CocCommand
-vmap <leader>p :CocCommand prettier.formatFile<CR>
+nmap <leader>p :CocCommand prettier.formatFile<CR>
 nmap <leader>rn <Plug>(coc-rename)
 nmap <silent>gd <Plug>(coc-definition)
 nmap <silent>gs <Plug>(coc-codeaction-selected)<CR>
@@ -278,10 +295,11 @@ endfunction
 
 "size of bar
 :let g:NERDTreeWinSize=45
+let g:loaded_perl_provider = 0
 
 "paths:
 " python for vim
 let g:python3_host_prog = '/usr/local/bin/python3'
 let g:python_host_prog = '/usr/bin/python'
 "ruby neovim settings
-let g:ruby_host_prog = '~/.rbenv/versions/2.4.1/bin/neovim-ruby-host'
+" let g:ruby_host_prog = '~/.rbenv/versions/2.4.1/bin/neovim-ruby-host'
